@@ -18,6 +18,10 @@ const educationLevels = [
   '10th', '12th', 'Diploma', 'Graduation', 'Post-Graduation', 'PhD',
 ];
 
+const specificQualifications = [
+  'BTech / BE', 'BCA', 'MCA', 'BSc', 'MSc', 'BCom', 'MCom', 'BBA', 'MBA', 'BA', 'MA', 'ITI', 'Other'
+];
+
 const categories = ['General', 'SC', 'ST', 'OBC', 'EWS', 'Minority'];
 
 const incomeRanges = [
@@ -41,6 +45,8 @@ export default function UserProfileForm({ onSubmit }) {
     gender: '',
     state: '',
     education: '',
+    qualification: '',
+    specialization: '',
     category: '',
     income: '',
     skills: [],
@@ -217,6 +223,35 @@ export default function UserProfileForm({ onSubmit }) {
                 ))}
               </select>
               {errors.education && <span className={styles.error}>{errors.education}</span>}
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>Qualification / Degree</label>
+              <select
+                name="qualification"
+                value={formData.qualification}
+                onChange={handleChange}
+                className={styles.select}
+              >
+                <option value="">Select (Optional)</option>
+                {specificQualifications.map(q => (
+                  <option key={q} value={q}>{q}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className={styles.fieldRow}>
+            <div className={styles.field}>
+              <label className={styles.label}>Course / Specialization</label>
+              <input
+                type="text"
+                name="specialization"
+                value={formData.specialization}
+                onChange={handleChange}
+                placeholder="e.g. Computer Science, Finance"
+                className={styles.input}
+              />
             </div>
 
             <div className={styles.field}>

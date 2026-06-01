@@ -122,7 +122,7 @@ const MOCK_OPPORTUNITIES = [
   },
 ];
 
-const filterTabs = ['All', 'Scholarships', 'Schemes', 'Grants', 'Skills', 'Startups', 'Subsidies', 'Real-Time Jobs'];
+const filterTabs = ['Real-Time Jobs', 'All', 'Scholarships', 'Schemes', 'Grants', 'Skills', 'Startups', 'Subsidies'];
 
 const tabCategoryMap = {
   All: null,
@@ -138,7 +138,7 @@ export default function AgentPage() {
   const [stage, setStage] = useState('form'); // 'form' | 'processing' | 'results'
   const [opportunities, setOpportunities] = useState([]);
   const [jobs, setJobs] = useState([]);
-  const [activeFilter, setActiveFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState('Real-Time Jobs');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleFormSubmit = async (profileData) => {
@@ -179,6 +179,7 @@ export default function AgentPage() {
 
   const handlePipelineComplete = () => {
     setStage('results');
+    setActiveFilter('Real-Time Jobs'); // Default to jobs immediately when done
   };
 
   const filteredOpportunities = useMemo(() => {

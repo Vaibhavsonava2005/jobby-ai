@@ -17,9 +17,11 @@ export async function POST(request) {
       : profile.interests || ['fresher'];
       
     const location = profile.state || 'India';
+    const qualification = profile.qualification || '';
+    const specialization = profile.specialization || '';
     
     // Fetch live jobs
-    const jobs = await fetchLiveJobs(skills, location);
+    const jobs = await fetchLiveJobs(skills, location, qualification, specialization);
     
     const processingTimeMs = Date.now() - startTime;
 
