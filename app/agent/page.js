@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import UserProfileForm from '../components/UserProfileForm';
 import WorkflowPipeline from '../components/WorkflowPipeline';
 import OpportunityCard from '../components/OpportunityCard';
+import JobCard from '../components/JobCard';
 import styles from './page.module.css';
 
 const MOCK_OPPORTUNITIES = [
@@ -121,7 +122,7 @@ const MOCK_OPPORTUNITIES = [
   },
 ];
 
-const filterTabs = ['All', 'Scholarships', 'Schemes', 'Grants', 'Skills', 'Startups', 'Subsidies'];
+const filterTabs = ['All', 'Scholarships', 'Schemes', 'Grants', 'Skills', 'Startups', 'Subsidies', 'Real-Time Jobs'];
 
 const tabCategoryMap = {
   All: null,
@@ -136,6 +137,7 @@ const tabCategoryMap = {
 export default function AgentPage() {
   const [stage, setStage] = useState('form'); // 'form' | 'processing' | 'results'
   const [opportunities, setOpportunities] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -143,20 +145,35 @@ export default function AgentPage() {
     setStage('processing');
 
     try {
-      const res = await fetch('/api/match', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
+      const [oppRes, jobsRes] = await Promise.all([
+        fetch('/api/match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(profileData),
+        }),
+        fetch('/api/jobs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(profileData),
+        })
+      ]);
 
-      if (res.ok) {
-        const data = await res.json();
+      if (oppRes.ok) {
+        const data = await oppRes.json();
         setOpportunities(data.opportunities || MOCK_OPPORTUNITIES);
       } else {
         setOpportunities(MOCK_OPPORTUNITIES);
       }
+
+      if (jobsRes.ok) {
+        const jobsData = await jobsRes.json();
+        setJobs(jobsData.jobs || []);
+      } else {
+        setJobs([]);
+      }
     } catch {
       setOpportunities(MOCK_OPPORTUNITIES);
+      setJobs([]);
     }
   };
 
@@ -307,20 +324,33 @@ export default function AgentPage() {
                   </div>
                 </div>
 
-                {/* Opportunity Cards */}
+                {/* Opportunity / Job Cards */}
                 <div className={styles.cardsGrid}>
-                  {filteredOpportunities.length > 0 ? (
-                    filteredOpportunities.map((opp, index) => (
-                      <OpportunityCard
-                        key={`${opp.title}-${index}`}
-                        opportunity={opp}
-                      />
-                    ))
+                  {activeFilter === 'Real-Time Jobs' ? (
+                    jobs.length > 0 ? (
+                      jobs.map((job, index) => (
+                        <JobCard key={job.id || index} job={job} />
+                      ))
+                    ) : (
+                      <div className={styles.noResults}>
+                        <span className={styles.noResultsIcon}>🔍</span>
+                        <p>No real-time jobs found for your skills and location. Try updating your profile.</p>
+                      </div>
+                    )
                   ) : (
-                    <div className={styles.noResults}>
-                      <span className={styles.noResultsIcon}>🔍</span>
-                      <p>No opportunities found for this filter. Try a different category or search term.</p>
-                    </div>
+                    filteredOpportunities.length > 0 ? (
+                      filteredOpportunities.map((opp, index) => (
+                        <OpportunityCard
+                          key={`${opp.title}-${index}`}
+                          opportunity={opp}
+                        />
+                      ))
+                    ) : (
+                      <div className={styles.noResults}>
+                        <span className={styles.noResultsIcon}>🔍</span>
+                        <p>No opportunities found for this filter. Try a different category or search term.</p>
+                      </div>
+                    )
                   )}
                 </div>
               </div>
