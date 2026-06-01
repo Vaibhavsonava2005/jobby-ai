@@ -230,6 +230,27 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ATS Promo Section */}
+      <section className={styles.howSection} style={{ background: 'rgba(108, 60, 225, 0.05)' }}>
+        <div className={styles.sectionContainer} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <div className={`${styles.sectionHeader} ${styles.animateOnScroll}`}>
+            <span className={styles.sectionBadge} style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>New Feature</span>
+            <h2 className={styles.sectionTitle}>
+              Get Your Resume <span className={styles.gradientText}>ATS Score</span>
+            </h2>
+            <p className={styles.sectionDesc} style={{ marginBottom: '32px' }}>
+              Upload your resume and let our Deep Mind AI scan it. We will generate your real ATS score, check for missing keywords, and tell you exactly what to add or delete to beat the bots!
+            </p>
+            <Link href="/ats" className={styles.ctaButton} style={{ background: '#10b981', display: 'inline-flex' }}>
+              Scan My Resume Now
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}>
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className={styles.ctaSection}>
         <div className={`${styles.ctaInner} ${styles.animateOnScroll}`}>

@@ -26,6 +26,7 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/agent', label: 'Agent' },
+    { href: '/ats', label: 'ATS Enhance 🚀' },
   ];
 
   return (
