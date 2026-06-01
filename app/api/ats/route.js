@@ -8,28 +8,41 @@ export async function POST(request) {
     const jobDescription = formData.get('jobDescription') || '';
 
     if (!file) {
-      return NextResponse.json({ error: 'Resume PDF is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Resume file is required' }, { status: 400 });
     }
 
-    // Read the PDF buffer
+    // Read the file buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Parse the PDF text
     let resumeText = '';
+    const fileName = file.name ? file.name.toLowerCase() : '';
+
     try {
-      const pdfParse = require('pdf-parse');
-      const pdfData = await pdfParse(buffer);
-      resumeText = pdfData.text;
+      if (fileName.endsWith('.docx')) {
+        // Parse DOCX
+        const mammoth = require('mammoth');
+        const result = await mammoth.extractRawText({ buffer: buffer });
+        resumeText = result.value;
+      } else {
+        // Default to PDF Parse
+        const pdfParse = require('pdf-parse');
+        const pdfData = await pdfParse(buffer);
+        resumeText = pdfData.text;
+      }
     } catch (parseError) {
-      console.error('PDF Parse Error:', parseError);
-      return NextResponse.json({ error: 'Failed to read PDF. Ensure it is a valid text-based PDF.' }, { status: 400 });
+      console.error('File Parse Error:', parseError);
+      return NextResponse.json({ error: 'Failed to read document. Ensure it is a valid text-based PDF or DOCX file (scanned images are not supported).' }, { status: 400 });
+    }
+
+    if (!resumeText || resumeText.trim().length < 50) {
+      return NextResponse.json({ error: 'Could not extract text. If this is a scanned PDF/Image, please upload a text-based document instead.' }, { status: 400 });
     }
 
     // Call OpenRouter API for deep ATS analysis
     const apiKey = process.env.OPENROUTER_API_KEY || Buffer.from('c2stb3ItdjEtNmE0ZDVmNTMwMWRlZDU0ZjY3YWZhMDVlYmQ1YWIwYzBkY2VkYmQ5NzYwNmQ0OWZlNTU5MWM1YTJjNzM4MTIzYQ==', 'base64').toString('utf-8');
     
-    // We'll use a fast, free conversational model for this since it's text generation
+    // Using Llama 3.3 70B as it's the best free text model on OpenRouter currently
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -37,11 +50,11 @@ export async function POST(request) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash:free", // fast free chat model capable of this task
+        model: "meta-llama/llama-3.3-70b-instruct:free",
         messages: [
           {
             role: "system",
-            content: "You are an expert ATS (Applicant Tracking System) Analyzer. Analyze the provided resume against the job description. Output ONLY valid JSON."
+            content: "You are an expert ATS (Applicant Tracking System) Analyzer. Analyze the provided resume against the job description. Output ONLY valid JSON without any markdown block formatting."
           },
           {
             role: "user",
@@ -60,11 +73,18 @@ export async function POST(request) {
     let resultJSON;
     
     try {
-      resultJSON = JSON.parse(data.choices[0].message.content);
-    } catch(e) {
-      // Fallback if model didn't return pure JSON
-      const jsonStr = data.choices[0].message.content.match(/\{[\s\S]*\}/)[0];
+      const content = data.choices[0].message.content;
+      // Strip any potential markdown blocks Llama might output
+      const jsonStr = content.replace(/```json/g, '').replace(/```/g, '').trim();
       resultJSON = JSON.parse(jsonStr);
+    } catch(e) {
+      const content = data.choices[0].message.content;
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        resultJSON = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error("Invalid JSON returned by AI");
+      }
     }
 
     return NextResponse.json({

@@ -125,7 +125,7 @@ export default function ATSPage() {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Your Resume (PDF Only)</label>
+              <label className={styles.label}>Your Resume (PDF or DOCX)</label>
               {!file ? (
                 <div 
                   className={styles.dropzone}
@@ -134,11 +134,11 @@ export default function ATSPage() {
                   onClick={() => fileInputRef.current.click()}
                 >
                   <span className={styles.dropIcon}>📄</span>
-                  <p className={styles.dropText}>Drag & Drop your PDF resume here</p>
-                  <p className={styles.dropHint}>or click to browse files</p>
+                  <p className={styles.dropText}>Drag & Drop your resume here</p>
+                  <p className={styles.dropHint}>or click to browse files (PDF, DOCX)</p>
                   <input 
                     type="file" 
-                    accept=".pdf" 
+                    accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
                     style={{ display: 'none' }} 
                     ref={fileInputRef}
                     onChange={handleFileChange}
