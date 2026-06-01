@@ -1,0 +1,287 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: calc(var(--navbar-height) + var(--space-2xl)) var(--space-lg) var(--space-4xl);
+}
+
+/* Animated Gradient Background */
+.bgGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0a1a3e 50%, #1a0a2e 75%, #0a0a1a 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Floating Orbs */
+.orb1 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 60, 225, 0.25) 0%, transparent 70%);
+  top: 10%;
+  left: -10%;
+  animation: orbFloat1 20s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+.orb2 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  bottom: 10%;
+  right: -5%;
+  animation: orbFloat2 25s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+.orb3 {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbFloat3 18s ease-in-out infinite;
+  filter: blur(50px);
+}
+
+/* Grid Overlay */
+.gridOverlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+/* Content */
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: var(--space-xl);
+  animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.badgeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Heading */
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text-bright);
+  margin-bottom: var(--space-lg);
+  letter-spacing: -1.5px;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.headingGradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subheading */
+.subheading {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto var(--space-xl);
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.subheading strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Counter */
+.counter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 24px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-2xl);
+  animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.counterIcon {
+  font-size: 1.1rem;
+}
+
+.counterText {
+  font-size: 0.9rem;
+  color: var(--success);
+  font-weight: 500;
+}
+
+.counterNum {
+  font-weight: 800;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+}
+
+/* CTA Buttons */
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-3xl);
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 16px 36px;
+  background: var(--gradient-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 20px rgba(108, 60, 225, 0.3);
+}
+
+.ctaPrimary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(108, 60, 225, 0.5);
+}
+
+.ctaOutline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 16px 36px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.05rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--glass-border-strong);
+  transition: all var(--transition-base);
+}
+
+.ctaOutline:hover {
+  border-color: var(--primary);
+  color: var(--primary-light);
+  background: rgba(108, 60, 225, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Trust Badges */
+.trustBadges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.trustIcon {
+  font-size: 1rem;
+}
+
+.trustDivider {
+  width: 1px;
+  height: 16px;
+  background: var(--glass-border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: calc(var(--navbar-height) + var(--space-3xl));
+    min-height: auto;
+    padding-bottom: var(--space-3xl);
+  }
+
+  .ctaGroup {
+    flex-direction: column;
+  }
+
+  .ctaPrimary,
+  .ctaOutline {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .trustBadges {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .trustDivider {
+    display: none;
+  }
+
+  .orb1 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .orb2 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .orb3 {
+    width: 200px;
+    height: 200px;
+  }
+}

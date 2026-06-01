@@ -1,0 +1,205 @@
+.pipeline {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.pipelineHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xl);
+}
+
+.headerDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.headerTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.stages {
+  display: flex;
+  flex-direction: column;
+}
+
+.stageWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+/* Stage States */
+.stage.active {
+  background: rgba(108, 60, 225, 0.08);
+  border: 1px solid rgba(108, 60, 225, 0.2);
+}
+
+.stage.completed {
+  opacity: 0.8;
+}
+
+.stage.waiting {
+  opacity: 0.4;
+}
+
+/* Stage Icon */
+.stageIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-base);
+}
+
+.stage.active .stageIcon {
+  background: rgba(108, 60, 225, 0.2);
+  border-color: rgba(108, 60, 225, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.stage.completed .stageIcon {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.checkmark {
+  color: var(--success);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+/* Stage Info */
+.stageInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.stageName {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.stage.waiting .stageName {
+  color: var(--text-muted);
+}
+
+.stageDesc {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* Progress Bar */
+.progressBar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin-top: var(--space-sm);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  animation: progressBar 1.3s ease-in-out forwards;
+}
+
+/* Status */
+.stageStatus {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.statusDone {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--success);
+  padding: 3px 10px;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: var(--radius-full);
+}
+
+.statusActive {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary-light);
+  padding: 3px 10px;
+  background: rgba(108, 60, 225, 0.1);
+  border-radius: var(--radius-full);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.statusWait {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  padding: 3px 10px;
+  background: var(--glass-bg);
+  border-radius: var(--radius-full);
+}
+
+/* Connector */
+.connector {
+  width: 2px;
+  height: 20px;
+  background: var(--glass-border);
+  margin-left: 38px;
+  transition: background var(--transition-base);
+}
+
+.connectorDone {
+  background: var(--success);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .pipeline {
+    padding: var(--space-lg);
+  }
+
+  .stage {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .stageIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .connector {
+    margin-left: 30px;
+  }
+}
