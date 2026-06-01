@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+const mammoth = require('mammoth');
+const PDFParser = require('pdf2json');
+
 export async function POST(request) {
   try {
     const formData = await request.formData();
@@ -21,14 +24,18 @@ export async function POST(request) {
     try {
       if (fileName.endsWith('.docx')) {
         // Parse DOCX
-        const mammoth = require('mammoth');
         const result = await mammoth.extractRawText({ buffer: buffer });
         resumeText = result.value;
       } else {
-        // Default to PDF Parse
-        const pdfParse = require('pdf-parse');
-        const pdfData = await pdfParse(buffer);
-        resumeText = pdfData.text;
+        // Parse PDF using pdf2json
+        const pdfParser = new PDFParser(this, 1);
+        resumeText = await new Promise((resolve, reject) => {
+          pdfParser.on("pdfParser_dataError", errData => reject(errData.parserError));
+          pdfParser.on("pdfParser_dataReady", pdfData => {
+            resolve(pdfParser.getRawTextContent());
+          });
+          pdfParser.parseBuffer(buffer);
+        });
       }
     } catch (parseError) {
       console.error('File Parse Error:', parseError);
