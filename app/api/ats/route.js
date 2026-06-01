@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pdfParse from 'pdf-parse/lib/pdf-parse.js';
+
 
 // Common technical and soft skills to look for if they aren't explicitly in the JD
 const commonKeywords = ['react', 'node', 'python', 'javascript', 'java', 'sql', 'aws', 'docker', 'kubernetes', 'leadership', 'communication', 'agile', 'scrum', 'management', 'marketing', 'sales', 'seo', 'analytics', 'design', 'figma'];
@@ -22,6 +22,7 @@ export async function POST(request) {
     // Parse the PDF text
     let resumeText = '';
     try {
+      const pdfParse = require('pdf-parse');
       const pdfData = await pdfParse(buffer);
       resumeText = pdfData.text.toLowerCase();
     } catch (parseError) {
