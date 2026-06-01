@@ -122,17 +122,7 @@ const MOCK_OPPORTUNITIES = [
   },
 ];
 
-const filterTabs = ['Real-Time Jobs', 'All', 'Scholarships', 'Schemes', 'Grants', 'Skills', 'Startups', 'Subsidies'];
-
-const tabCategoryMap = {
-  All: null,
-  Scholarships: 'Scholarship',
-  Schemes: 'Scheme',
-  Grants: 'Grant',
-  Skills: 'Skill Program',
-  Startups: 'Startup Program',
-  Subsidies: 'Subsidy',
-};
+const filterTabs = ['Real-Time Jobs', 'Opportunities'];
 
 export default function AgentPage() {
   const [stage, setStage] = useState('form'); // 'form' | 'processing' | 'results'
@@ -184,12 +174,6 @@ export default function AgentPage() {
 
   const filteredOpportunities = useMemo(() => {
     let filtered = opportunities;
-
-    // Category filter
-    const category = tabCategoryMap[activeFilter];
-    if (category) {
-      filtered = filtered.filter((o) => o.category === category);
-    }
 
     // Search filter
     if (searchQuery.trim()) {
