@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pdfParse from 'pdf-parse';
+import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 
 // Common technical and soft skills to look for if they aren't explicitly in the JD
 const commonKeywords = ['react', 'node', 'python', 'javascript', 'java', 'sql', 'aws', 'docker', 'kubernetes', 'leadership', 'communication', 'agile', 'scrum', 'management', 'marketing', 'sales', 'seo', 'analytics', 'design', 'figma'];
